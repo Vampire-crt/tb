@@ -16,7 +16,13 @@ function updateProgress() {
 }
 
 shareButton.addEventListener("click", () => {
-    // Call the Telegram WebApp function to share the link
-    Telegram.WebApp.openTelegramLink("https://your-link-here.com");
-    updateProgress();
+    // Check if the Telegram WebApp object is available
+    if (window.Telegram && Telegram.WebApp) {
+        // Use the Telegram WebApp's openTelegramLink method
+        Telegram.WebApp.openTelegramLink("https://t.me/your_channel_or_group_link");
+        updateProgress();
+    } else {
+        console.error("Telegram WebApp is not available.");
+        alert("Telegram WebApp is not initialized correctly.");
+    }
 });
