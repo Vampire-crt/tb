@@ -16,10 +16,8 @@ function updateProgress() {
 }
 
 shareButton.addEventListener("click", () => {
-    // Check if the Telegram WebApp object is available
     if (window.Telegram && Telegram.WebApp) {
-        // Use the Telegram WebApp's openTelegramLink method
-        Telegram.WebApp.openTelegramLink("https://t.me/your_channel_or_group_link");
+        Telegram.WebApp.openTelegramLink("https://t.me/vote");
         updateProgress();
     } else {
         console.error("Telegram WebApp is not available.");
