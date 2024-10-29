@@ -1,9 +1,24 @@
-
 {
-    "groups": [
-      { "id": 1, "name": "Username 1", "url": "https://t.me/username", "image": "images/1.jpg" },
-      { "id": 2, "name": "Vampire 👹", "url": "https://t.me/vampirex01", "image": "images/2.jpg" },
-      { "id": 3, "name": "Kanel 🦎", "url": "https://t.me/+FCt9sPHxfzRiNjVl", "image": "images/3.jpg" }
-    ]
-  }
-  
+  "popupMessage": "This is a new shared group information message.\nAdditional instructions or details here.",
+  "alertMessage": "This is a  new shared alert message.\nPlease follow the guidelines outlined.",
+  "groups": [
+    {
+      "id": 1,
+      "name": "Group Name 1",
+      "url": "https://t.me/group1",
+      "image": "images/1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Group Name 2",
+      "url": "https://t.me/group2",
+      "image": "images/2.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Group Name 3",
+      "url": "https://t.me/group3",
+      "image": "images/3.jpg"
+    }
+  ]
+}
