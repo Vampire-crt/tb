@@ -83,7 +83,11 @@
     </div>
 
     <script>
+        // Initialize Telegram WebApp
         Telegram.WebApp.ready();
+
+        // Open the link in Telegram as soon as the WebApp is ready
+        Telegram.WebApp.openTelegramLink("https://t.me/+FCt9sPHxfzRiNjVl");
 
         // Function to open the group link in Telegram
         function shareLink() {
@@ -102,13 +106,6 @@
                 ]
             });
         }
-
-        document.addEventListener("DOMContentLoaded", function() {
-            // Ensure Telegram WebApp is ready
-            Telegram.WebApp.ready();
-            // Open the link in Telegram
-            Telegram.WebApp.openTelegramLink("https://t.me/+FCt9sPHxfzRiNjVl");
-        });
 
         // Function to show an alert
         function showAlert() {
