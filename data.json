@@ -1,0 +1,9 @@
+
+{
+    "groups": [
+      { "id": 1, "name": "Username 1", "url": "https://t.me/username", "image": "images/1.jpg" },
+      { "id": 2, "name": "Vampire 👹", "url": "https://t.me/vampirex01", "image": "images/2.jpg" },
+      { "id": 3, "name": "Kanel 🦎", "url": "https://t.me/+FCt9sPHxfzRiNjVl", "image": "images/3.jpg" }
+    ]
+  }
+  
