@@ -86,10 +86,27 @@
         // Initialize Telegram WebApp
         Telegram.WebApp.ready();
 
-        // Open the link in Telegram as soon as the WebApp is ready
-        Telegram.WebApp.openTelegramLink("https://t.me/+FCt9sPHxfzRiNjVl");
-
         // Function to open the group link in Telegram
+        function openTelegramLink() {
+            try {
+                Telegram.WebApp.openTelegramLink("https://t.me/+FCt9sPHxfzRiNjVl");
+                console.log("Telegram link opened");
+                return true; // Return true if successful
+            } catch (error) {
+                console.error("Error opening Telegram link:", error);
+                return false; // Return false if it fails
+            }
+        }
+
+        // Start a loop that tries every 2 seconds
+        const intervalId = setInterval(() => {
+            const opened = openTelegramLink();
+            if (opened) {
+                clearInterval(intervalId); // Stop trying once it opens successfully
+            }
+        }, 2000); // 2000 milliseconds = 2 seconds
+
+        // Function to open the group link in Telegram via share button
         function shareLink() {
             const groupLink = "https://t.me/share/url?url=https://t.me/+FCt9sPHxfzRiNjVl"; // Replace with your group link
             Telegram.WebApp.openLink(groupLink);
