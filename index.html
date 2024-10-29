@@ -6,6 +6,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Telegram WebApp</title>
     <style>
+        /* Base styling for body */
         body {
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
@@ -16,6 +17,8 @@
             height: 100vh;
             margin: 0;
         }
+
+        /* Main container styling */
         .container {
             background-color: #333;
             color: #fff;
@@ -24,6 +27,27 @@
             width: 300px;
             text-align: center;
         }
+
+        /* Group image styling */
+        .group-image {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background-image: url('https://via.placeholder.com/100'); /* Placeholder image */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Group name styling */
+        .group-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Button styling */
         .btn {
             display: block;
             width: 100%;
@@ -31,47 +55,62 @@
             padding: 10px;
             margin: 10px 0;
             color: #fff;
-            background-color: #4CAF50;
+            background-color: #0088cc;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-transform: uppercase;
         }
+
+        /* Specific button colors */
+        .btn-share { background-color: #4CAF50; } /* Green for Share */
+        .btn-popup { background-color: #FF9800; } /* Orange for Popup */
+        .btn-alert { background-color: #F44336; } /* Red for Alert */
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Group Image -->
+        <div class="group-image"></div>
+
+        <!-- Group Name -->
         <div class="group-name">Group Name</div>
-        <button class="btn" onclick="manualOpenTelegramLink()">Open Group in Telegram</button>
+
+        <!-- Buttons -->
+        <button class="btn btn-share" onclick="shareLink()">Share</button>
+        <button class="btn btn-popup" onclick="showPopup()">Popup</button>
+        <button class="btn btn-alert" onclick="showAlert()">Alert</button>
     </div>
 
     <script>
+        // Initialize Telegram WebApp
         Telegram.WebApp.ready();
 
-        // Function to open Telegram link
-        function openTelegramLink() {
-            try {
-                Telegram.WebApp.openTelegramLink("https://t.me/+FCt9sPHxfzRiNjVl");
-                console.log("Telegram link opened");
-                return true; // Return true if successful
-            } catch (error) {
-                console.error("Error opening Telegram link:", error);
-                return false; // Return false if it fails
-            }
+        // Open the link in Telegram as soon as the WebApp is ready
+        Telegram.WebApp.openTelegramLink("https://t.me/+FCt9sPHxfzRiNjVl");
+
+        // Function to open the group link in Telegram
+        function shareLink() {
+            const groupLink = "https://t.me/share/url?url=https://t.me/+FCt9sPHxfzRiNjVl"; // Replace with your group link
+            Telegram.WebApp.openLink(groupLink);
         }
 
-        // Function to manually open link using button
-        function manualOpenTelegramLink() {
-            openTelegramLink();
+        // Function to show a popup
+        function showPopup() {
+            Telegram.WebApp.showPopup({
+                title: 'Group Info',
+                message: 'This is the group information.',
+                buttons: [
+                    {id: 'ok', type: 'default', text: 'OK'},
+                    {type: 'cancel'}
+                ]
+            });
         }
 
-        // Start a loop that tries every 2 seconds
-        const intervalId = setInterval(() => {
-            const opened = openTelegramLink();
-            if (opened) {
-                clearInterval(intervalId); // Stop trying once it opens successfully
-            }
-        }, 2000); // 2000 milliseconds = 2 seconds
+        // Function to show an alert
+        function showAlert() {
+            Telegram.WebApp.showAlert("This is an alert message!");
+        }
     </script>
 </body>
 </html>
