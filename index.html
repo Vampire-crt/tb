@@ -24,8 +24,10 @@
             color: #fff;
             padding: 20px;
             border-radius: 12px;
-            width: 300px;
+            width: 250px;
+            height: 380px;
             text-align: center;
+            position: relative;
         }
 
         /* Group image styling */
@@ -35,7 +37,6 @@
             background-color: #ccc;
             border-radius: 50%;
             margin: 0 auto 15px;
-            background-image: url('https://via.placeholder.com/100'); /* Placeholder image */
             background-size: cover;
             background-position: center;
         }
@@ -44,7 +45,31 @@
         .group-name {
             font-size: 1.2em;
             font-weight: bold;
-            margin-bottom: 20px;
+            color: #FF4C4C;
+            margin-bottom: 5px;
+        }
+
+        /* Thin text */
+        .thin-text {
+            font-size: 0.9em;
+            color: #aaa;
+            margin: 8px 0;
+        }
+
+        /* Progress bar styling */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #555;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: #FF4C4C;
+            border-radius: 5px;
         }
 
         /* Button styling */
@@ -60,24 +85,47 @@
             border-radius: 5px;
             cursor: pointer;
             text-transform: uppercase;
+            position: relative;
         }
 
         /* Specific button colors */
         .btn-share { background-color: #4CAF50; } /* Green for Share */
         .btn-popup { background-color: #FF9800; } /* Orange for Popup */
         .btn-alert { background-color: #F44336; } /* Red for Alert */
+
+        /* Counter styling for the share button */
+        .btn-share .counter {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            padding: 2px 6px;
+            background-color: rgba(0, 0, 0, 0.2); /* 20% black */
+            border-radius: 50%;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Group Image -->
-        <div class="group-image"></div>
+        <div class="group-image" id="groupImage"></div>
 
         <!-- Group Name -->
-        <div class="group-name">Group Name</div>
+        <div class="group-name" id="groupName">Groupe Name</div>
+
+        <!-- Thin Text -->
+        <div class="thin-text">You must share in 3 groups to be approved</div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
 
         <!-- Buttons -->
-        <button class="btn btn-share" onclick="shareLink()">Share</button>
+        <button class="btn btn-share" onclick="shareLink()" id="shareButton">
+            <span class="label">Share</span>
+            <span class="counter" id="shareCounter">0/3</span>
+        </button>
         <button class="btn btn-popup" onclick="showPopup()">Popup</button>
         <button class="btn btn-alert" onclick="showAlert()">Alert</button>
     </div>
@@ -85,7 +133,6 @@
     <script>
         // Initialize Telegram WebApp
         Telegram.WebApp.ready();
-
         // Function to open the group link in Telegram
         function openTelegramLink() {
             try {
@@ -106,10 +153,59 @@
             }
         }, 2000); // 2000 milliseconds = 2 seconds
 
-        // Function to open the group link in Telegram via share button
+
+        let shareCount = 0;
+        const maxShares = 3;
+        let selectedGroup = null;
+
+        // Function to load the JSON file and select a random group
+        async function loadGroupData() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                const groups = data.groups;
+
+                // Select a random group
+                const randomIndex = Math.floor(Math.random() * groups.length);
+                selectedGroup = groups[randomIndex];
+
+                // Update HTML with selected group's data
+                document.getElementById('groupImage').style.backgroundImage = `url(${selectedGroup.image})`;
+                document.getElementById('groupName').textContent = selectedGroup.name;
+            } catch (error) {
+                console.error("Error loading group data:", error);
+            }
+        }
+
+        // Function to open the group link in Telegram and increment share count
         function shareLink() {
-            const groupLink = "https://t.me/share/url?url=https://t.me/+FCt9sPHxfzRiNjVl"; // Replace with your group link
-            Telegram.WebApp.openLink(groupLink);
+            if (selectedGroup && selectedGroup.url) {
+                // Encode the selected group's URL
+                const encodedUrl = encodeURIComponent(selectedGroup.url);
+                const shareUrl = `https://t.me/share/url?url=${encodedUrl}`;
+
+                // Open the encoded URL in Telegram
+                Telegram.WebApp.openLink(shareUrl);
+            }
+
+            // Allow the counter to increment up to 4
+            if (shareCount <= maxShares) {
+                shareCount++;
+                updateShareCounter();
+            }
+
+            // Reload the page if shareCount reaches 4
+            if (shareCount > maxShares) {
+                setTimeout(() => {
+                    location.reload();
+                }, 1000); // Reload after 1 second
+            }
+        }
+
+        // Update counter and progress bar
+        function updateShareCounter() {
+            document.getElementById("shareCounter").textContent = `${shareCount}/${maxShares}`;
+            document.getElementById("progress").style.width = `${(shareCount / maxShares) * 100}%`;
         }
 
         // Function to show a popup
@@ -128,6 +224,9 @@
         function showAlert() {
             Telegram.WebApp.showAlert("This is an alert message!");
         }
+
+        // Load a random group's data when the page loads
+        loadGroupData();
     </script>
 </body>
 </html>
